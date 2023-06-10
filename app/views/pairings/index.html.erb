@@ -1,0 +1,56 @@
+<h1>Criando pares</h1>
+
+<div class="participants-section">
+  <h2>Participantes</h2>
+
+  <%= form_for Participant.new, url: participants_path do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.submit 'Add' %>
+  <% end %>
+
+  <ul>
+    <% Participant.all.each do |participant| %>
+      <li><%= participant.name %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="generate-button">
+  <%= button_to 'Dividir em pares', pairings_path, method: :post %>
+</div>
+
+
+
+<% if @pairs.present? %>
+  <h1>Duplas geradas</h1>
+
+  <div class="pairings-section">
+    <h2>Duplas</h2>
+    <ul>
+      <% displayed_pairs = [] %>
+      <% @pairs.each do |pair| %>
+        <% participants = pair.pair.split(' e ').sort %>
+        <% next if displayed_pairs.include?(participants) %>
+        <% displayed_pairs << participants %>
+        <li><%= pair.pair %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% if @pairs.present? %>
+  <h1>Histórico de Duplas</h1>
+  <div class="pairings-section">
+      <ul>
+        <% displayed_pairs = [] %>
+        <% @pairs.each do |pair| %>
+          <% participants = pair.pair.split(' e ').sort %>
+          <% next if displayed_pairs.include?(participants) %>
+          <% displayed_pairs << participants %>
+          <li><%= pair.pair %></li>
+        <% end %>
+      </ul>
+  </div>
+  <% end %>
+  
+<% end %>

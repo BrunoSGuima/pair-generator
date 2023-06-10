@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+root 'pairings#index'
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+resources :pairings, only: [:index, :create]
+
+resources :participants, only: [:create]
+
 end
