@@ -1,12 +1,12 @@
 <h1>Criando pares</h1>
 
 <div class="participants-section">
-  <h2>Participantes</h2>
+  <h2>Participantes:</h2>
 
   <%= form_for Participant.new, url: participants_path do |f| %>
     <%= f.label :name %>
     <%= f.text_field :name %>
-    <%= f.submit 'Add' %>
+    <%= f.submit 'Adicionar' %>
   <% end %>
 
   <ul>
@@ -59,6 +59,19 @@
     </ul>
   </div>
 <% end %>
+
+<h1>Adicionar Par Manualmente</h1>
+
+<%= form_with(url: manual_pairs_path, method: :post) do |f| %>
+  <%= f.label :participant1, "Participante 1" %>
+  <%= f.text_field :participant1 %>
+
+  <%= f.label :participant2, "Participante 2" %>
+  <%= f.text_field :participant2 %>
+
+  <%= f.submit 'Adicionar Par' %>
+<% end %>
+
 
 
 
