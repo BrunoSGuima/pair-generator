@@ -23,4 +23,6 @@ class Pairing < ApplicationRecord
       Pairing.create(pair: pair)
     end
   end
+
+  
 end

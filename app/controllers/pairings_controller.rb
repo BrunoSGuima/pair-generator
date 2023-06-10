@@ -2,6 +2,7 @@ class PairingsController < ApplicationController
   def index
     @pairs = Pairing.all
     @latest_pairing = Pairing.last
+    @participants = Participant.all
   end
 
   def create

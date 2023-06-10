@@ -22,7 +22,7 @@
             <div class="mb-3">
               <%= f.text_field :name, class: "form-control" %>
             </div>
-            <%= f.submit 'Adicionar', class: "btn btn-primary" %>
+            <%= f.submit 'Adicionar', class: "btn btn-outline-warning" %>
           <% end %>
 
           <ul class="list-group mt-3">
@@ -32,7 +32,7 @@
           </ul>
 
           <div class="mt-4">
-            <%= button_to 'Dividir em pares', pairings_path, method: :post, class: "btn btn-primary" %>
+            <%= button_to 'Dividir em pares', pairings_path, method: :post, class: "btn btn-outline-warning" %>
           </div>
         </div>
       </div>
@@ -43,12 +43,13 @@
             <h2>Duplas Geradas:</h2>
             <ul class="list-group">
               <% displayed_pairs = Set.new %>
-              <% @pairs.last(4).each do |pair| %>
-                <% participants = pair.pair.split(' e ').sort %>
-                <% next if displayed_pairs.include?(participants) %>
-                <% displayed_pairs << participants %>
-                <li class="list-group-item"><%= participants.join(' e ') %></li>
-              <% end %>
+                <% num_pairs = (@participants.length.to_i / 2) %>
+                  <% @pairs.last(num_pairs).each do |pair| %>
+                    <% participants = pair.pair.split(' e ').sort %>
+                    <% next if displayed_pairs.include?(participants) %>
+                    <% displayed_pairs << participants %>
+                    <li class="list-group-item"><%= participants.join(' e ') %></li>
+                  <% end %>
             </ul>
           </div>
         <% end %>
@@ -89,7 +90,7 @@
             <%= f.label :participant2, "Participante 2:", class: "form-label" %>
             <%= f.text_field :participant2, class: "form-control" %>
           </div>
-          <%= f.submit 'Adicionar Par', class: "btn btn-primary" %>
+          <%= f.submit 'Adicionar Par', class: "btn btn-outline-warning" %>
         <% end %>
       </div>
     </div>
