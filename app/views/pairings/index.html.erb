@@ -1,76 +1,115 @@
-<h1>Criando pares</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Criando pares</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body class = "bg-gray">
+  <nav class="navbar navbar-expand navbar-dark bg-black">
+    <div class="container-fluid">
+      <span class="navbar-brand mx-auto criando-pares">CRIANDO PARES</span>
+    </div>
+  </nav>
 
-<div class="participants-section">
-  <h2>Participantes:</h2>
+  <div class="container mt-4">
+  <div class="alert"><%= alert %></div>
+    <div class="row">
+      <div class="col">
+        <div class="participants-section">
+          <h2>Participantes:</h2>
 
-  <%= form_for Participant.new, url: participants_path do |f| %>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    <%= f.submit 'Adicionar' %>
-  <% end %>
+          <%= form_for Participant.new, url: participants_path do |f| %>
+            <div class="mb-3">
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+            <%= f.submit 'Adicionar', class: "btn btn-primary" %>
+          <% end %>
 
-  <ul>
-    <% Participant.all.each do |participant| %>
-      <li><%= participant.name %></li>
-    <% end %>
-  </ul>
-</div>
+          <ul class="list-group mt-3">
+            <% Participant.all.each do |participant| %>
+              <li class="list-group-item"><%= participant.name %></li>
+            <% end %>
+          </ul>
 
-<div class="generate-button">
-  <%= button_to 'Dividir em pares', pairings_path, method: :post %>
-</div>
+          <div class="mt-4">
+            <%= button_to 'Dividir em pares', pairings_path, method: :post, class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
 
+      <div class="col">
+        <% if params[:show_latest_pairs] %>
+          <div class="latest-pairing-section">
+            <h2>Duplas Geradas:</h2>
+            <ul class="list-group">
+              <% displayed_pairs = Set.new %>
+              <% @pairs.last(4).each do |pair| %>
+                <% participants = pair.pair.split(' e ').sort %>
+                <% next if displayed_pairs.include?(participants) %>
+                <% displayed_pairs << participants %>
+                <li class="list-group-item"><%= participants.join(' e ') %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
 
-
-<% if params[:show_latest_pairs] %>
-  <h1>Últimas duplas geradas</h1>
-
-  <div class="latest-pairing-section">
-    <h2>Duplas</h2>
-    <ul>
-      <% displayed_pairs = Set.new %>
-      <% @pairs.last(4).each do |pair| %>
-        <% participants = pair.pair.split(' e ').sort %>
-        <% next if displayed_pairs.include?(participants) %>
-        <% displayed_pairs << participants %>
-        <li><%= participants.join(' e ') %></li>
-      <% end %>
-    </ul>
+      <div class="col">
+        <% if @pairs.present? %>
+          <div class="pairings-section">
+            <h2>Histórico de Duplas:</h2>
+            <ul class="list-group">
+              <% displayed_pairs = [] %>
+              <% index = 1 %>
+              <% @pairs.each do |pair| %>
+                <% participants = pair.pair.split(' e ').sort %>
+                <% next if displayed_pairs.include?(participants) %>
+                <% displayed_pairs << participants %>
+                <li class="list-group-item"><%= "#{index}. #{pair.pair}" %></li>
+                <% index += 1 %>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-<% end %>
 
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col">
+        <h2>Adicionar Par Manualmente</h2>
 
-
-<% if @pairs.present? %>
-  <h1>Histórico de Duplas</h1>
-  <div class="pairings-section">
-    <ul>
-      <% displayed_pairs = [] %>
-      <% index = 1 %>
-      <% @pairs.each do |pair| %>
-        <% participants = pair.pair.split(' e ').sort %>
-        <% next if displayed_pairs.include?(participants) %>
-        <% displayed_pairs << participants %>
-        <li>
-          <%= "#{index}. #{pair.pair}" %>
-        </li>
-        <% index += 1 %>
-      <% end %>
-    </ul>
+        <%= form_with(url: manual_pairs_path, method: :post) do |f| %>
+          <div class="mb-3">
+            <%= f.label :participant1, "Participante 1:", class: "form-label" %>
+            <%= f.text_field :participant1, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :participant2, "Participante 2:", class: "form-label" %>
+            <%= f.text_field :participant2, class: "form-control" %>
+          </div>
+          <%= f.submit 'Adicionar Par', class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
-<% end %>
 
-<h1>Adicionar Par Manualmente</h1>
+  <footer class="mt-4 bg-black text-white">
+    <div class="container-fluid text-center py-3">
+      <p class="text-decoration-underline"> COMO FUNCIONA O SORTEIO:</p>
+      <ul>1. Os participantes do grupo deverão ser adicionados. </ul>
+      <ul>2. Clique em "Dividir em pares" para formar as duplas </ul>
+      <ul>3. As duplas sorteadas serão exibidas em "Duplas Geradas". </ul>
+      <ul>4. As duplas não poderão se repetir. </ul>
+      <ul>5. Um histórico das duplas já sorteadas é exibido. </ul>
+      <ul>6. Duplas podem ser insderidas manualmente no histórico das duplas já sorteadas. </ul>
+      <ul>7. Caso o total máximo de combinações de duplas já tenha sido atingido, isso será informado através de um alerta. </ul>
+    </div>
+  </footer>
+</body>
+</html>
 
-<%= form_with(url: manual_pairs_path, method: :post) do |f| %>
-  <%= f.label :participant1, "Participante 1" %>
-  <%= f.text_field :participant1 %>
-
-  <%= f.label :participant2, "Participante 2" %>
-  <%= f.text_field :participant2 %>
-
-  <%= f.submit 'Adicionar Par' %>
-<% end %>
 
 
 
