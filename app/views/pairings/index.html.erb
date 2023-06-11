@@ -27,12 +27,20 @@
 
           <ul class="list-group mt-3">
             <% Participant.all.each do |participant| %>
-              <li class="list-group-item"><%= participant.name %></li>
+              <div class="row">
+                <div class="col">
+                  <li class="list-group-item"><%= participant.name %></li>
+                </div>
+                <div class="col-auto">
+                  <%= button_to 'Excluir', participant_path(participant), method: :delete, class: "btn btn-outline-danger" %>
+                </div>
+              </div>
             <% end %>
+
           </ul>
 
           <div class="mt-4">
-            <%= button_to 'Dividir em pares', pairings_path, method: :post, class: "btn btn-outline-warning" %>
+            <%= button_to 'Dividir em pares', pairings_path, method: :post, class: "btn btn-outline-warning", id: "divide_pairs_button" %>
           </div>
         </div>
       </div>
@@ -106,6 +114,7 @@
       <ul>5. Um histórico das duplas já sorteadas é exibido. </ul>
       <ul>6. Duplas podem ser insderidas manualmente no histórico das duplas já sorteadas. </ul>
       <ul>7. Caso o total máximo de combinações de duplas já tenha sido atingido, isso será informado através de um alerta. </ul>
+      <ul>8. Caso o grupo seja de um total ímpar, adicione um participante "NULO". Uma pessoa ficará sozinha (com o participante NULO). </ul>
     </div>
   </footer>
 </body>

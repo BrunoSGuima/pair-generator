@@ -4,6 +4,13 @@ class ParticipantsController < ApplicationController
     redirect_to root_path
   end
 
+  def destroy
+    @participant = Participant.find(params[:id])
+    @participant.destroy
+    redirect_to root_path
+  end
+  
+
   private
 
   def participant_params

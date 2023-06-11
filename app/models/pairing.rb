@@ -1,8 +1,10 @@
 class Pairing < ApplicationRecord
-  MAX_UNIQUE_PAIRS = (Participant.count * (Participant.count - 1) / 2)
+  def self.max_unique_pairs
+    Participant.count * (Participant.count - 1) / 2
+  end
 
   def self.generate_round
-    if Pairing.count >= MAX_UNIQUE_PAIRS
+    if Pairing.count >= max_unique_pairs
       raise 'Todas as combinações possíveis já foram feitas'
     end
 
@@ -23,6 +25,5 @@ class Pairing < ApplicationRecord
       Pairing.create(pair: pair)
     end
   end
-
-  
 end
+

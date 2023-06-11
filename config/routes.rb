@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :pairings, only: [:index, :create]
 
-  resources :participants, only: [:create]
+  resources :participants, only: [:create, :destroy]
 
   post 'pairings/manual', to: 'pairings#add_manual_pair', as: 'manual_pairs'
 end
